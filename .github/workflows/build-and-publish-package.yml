@@ -1,0 +1,53 @@
+name: 'Build and Publish Package Workflow'
+run-name: 'Build and Publish Package Workflow'
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build-and-publish-package:
+    if: github.ref == 'refs/heads/master'
+    name: Build and Publish Package To Git Registry
+    runs-on: ubuntu-22.04
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '18.x'
+          registry-url: 'https://npm.pkg.github.com'
+          scope: '@costa-coffee'
+
+      - name: Install dependencies
+        run: npm i
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
+
+      - name: Publish
+        run: npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Summary
+        run: |
+          echo "Package ${{ github.repository }} has been published to GitHub Packages" >> $GITHUB_STEP_SUMMARY
+
+  fail-if-not-master:
+    if: github.ref != 'refs/heads/master'
+    name: Fail if not master branch
+    runs-on: ubuntu-22.04
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Fail
+        run: |
+          echo "This workflow is only allowed to run on master branch" >> $GITHUB_STEP_SUMMARY
+          exit 1

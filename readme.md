@@ -1,5 +1,7 @@
 # node-jws [![Build Status](https://secure.travis-ci.org/brianloveswords/node-jws.svg)](http://travis-ci.org/brianloveswords/node-jws)
 
+Forked to add support for non standard JWTs using base64 rather than base64url
+
 An implementation of [JSON Web Signatures](http://self-issued.info/docs/draft-ietf-jose-json-web-signature.html).
 
 This was developed against `draft-ietf-jose-json-web-signature-08` and
