@@ -4,6 +4,10 @@ run-name: 'Build and Publish Package Workflow'
 on:
   workflow_dispatch:
 
+permissions:
+  contents: read
+  packages: write
+
 jobs:
   build-and-publish-package:
     if: github.ref == 'refs/heads/master'
