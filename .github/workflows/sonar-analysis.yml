@@ -1,0 +1,21 @@
+name: SonarQube Analysis
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    types: [opened, edited, synchronize, reopened]
+
+permissions:
+  contents: read
+  packages: read
+  pull-requests: write
+
+jobs:
+  sonarqube:
+    uses: costa-coffee/costa-loyalty-workflows/.github/workflows/node-sonar-analysis.yml@1ad2f00ffeddde01c10cada64ec510c079f23e7d # v3.0.1
+    with:
+      node-version: '22'
+      test-command: 'make test/keys && npm test'
+    secrets: inherit
